@@ -40,7 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appointment',
     'crispy_forms',
+    'social_django',
 ]
+
+from django.contrib.messages import constants as messages
+
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -52,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -67,6 +81,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -74,6 +91,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'appointment'
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '171337261614362'        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '9d63415889b795f8439c9b07c23be89b'  # App Secret
+
+
+SOCIAL_AUTH_GITHUB_KEY = '6ba8bf9d4678566f40ae'
+SOCIAL_AUTH_GITHUB_SECRET = '1e7312608cfec46d3d7dc11b131fd329c0408166'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -85,6 +122,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #     }
 # }
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DATABASES = {
     'default': {
@@ -136,3 +174,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # TEMPLATES_DIRS = os.path.join(BASE_DIR,'templates')
+
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'p.nepal404@gmail.com'
+EMAIL_HOST_PASSWORD = ''

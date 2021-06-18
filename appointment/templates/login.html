@@ -9,29 +9,19 @@
     </head>
     <body>
 
-        {% load crispy_forms_tags %} 
-
-        {% if user.is_authenticated %}
+        {% load crispy_forms_tags %}  
+<!--Register--> 
 <div class="container py-5">
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Welcome, {{user.username}}</a>
-  </li>
-	<h1>Appointment Form</h1>
+	<h1>Login</h1>
 	<form method="POST">
 		{% csrf_token %}
-		{{ form | crispy }}                    
-		<button class="btn btn-primary" type="submit">Submit</button>
+		{{ login_form|crispy }}  
+   {% include 'messages.html' %}
+		<button class="btn btn-primary" type="submit">Login</button>
+    <p><strong>-- OR --</strong></p>
+    <a href="{% url 'social:begin' 'github' %}">Login with Github</a><br>
 	</form>
-</div>
-{%else%}
-<li class="nav-item">
-  <a class="nav-link" href="{% url 'login' %}">Login</a>
-</li>
-{% endif %}
-</ul>
+	<p class="text-center">New User?, <a href="/register">Register</a> instead.</p>
 </div>
 </body>
 </html>
